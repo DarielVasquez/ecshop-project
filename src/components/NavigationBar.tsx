@@ -2,42 +2,65 @@ import React, { useState } from "react";
 import {
   Navbar,
   Container,
-  Nav,
-  NavDropdown,
+  Dropdown,
   Form,
   FormControl,
+  Col,
 } from "react-bootstrap";
+import { BsPrefixComponent } from "react-bootstrap/esm/helpers";
+import {
+  MdMenu,
+  MdOutlineShoppingCart,
+  MdOutlineSettings,
+  MdShoppingBasket,
+} from "react-icons/md";
 
 const NavigationBar = () => {
   return (
-    <Navbar bg="dark" variant="dark" expand="md" fixed="top">
-      <Container className="align-items-start p-2">
-        <Navbar.Brand href="/">My App</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="m-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/about">About</Nav.Link>
-          </Nav>
-          <Nav>
-            <NavDropdown
-              title={
+    <>
+      <Navbar
+        bg="primary"
+        variant="dark"
+        expand="md"
+        fixed="top"
+        className="p-0"
+      >
+        <Container>
+          <div className="text-light">Welcome, {`John Doe`}</div>
+        </Container>
+      </Navbar>
+      <Navbar bg="dark" variant="dark" expand="md" fixed="top" className="mt-4">
+        <Container className="p-2">
+          <Col
+            xs="1"
+            sm="1"
+            md="1"
+            lg="1"
+            className="d-flex justify-content-center"
+          >
+            <Navbar.Brand href="/" className="d-flex">
+              <MdShoppingBasket className="icons-size"></MdShoppingBasket>
+            </Navbar.Brand>
+          </Col>
+          <Col xs="2" sm="2" md="2" lg="2">
+            <Dropdown>
+              <Dropdown.Toggle>
                 <div className="d-flex align-items-center">
-                  <img
-                    src="https://via.placeholder.com/30"
-                    alt="profile"
-                    className="mr-2 rounded-circle d-none d-sm-block"
-                  />
-                  <span className="ps-md-2">{`John Doe`}</span>
+                  <MdMenu className="icons-size"></MdMenu>
+                  <span className="ps-md-2 d-none d-sm-block">Menu</span>
                 </div>
-              }
-              id="collasible-nav-dropdown"
-            >
-              <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-              <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="/">Logout</NavDropdown.Item>
-            </NavDropdown>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="1" href="/">
+                  Home
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="2" href="/about">
+                  About
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Col>
+          <Col xs="5" sm="7" md="7" lg="7">
             <Form className="d-flex justify-content-center">
               <FormControl
                 type="text"
@@ -45,10 +68,50 @@ const NavigationBar = () => {
                 className="mr-sm-2"
               />
             </Form>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+          </Col>
+          <Col xs="2" sm="1" md="1" className="d-flex justify-content-end">
+            <Dropdown align={{ xl: "start" }}>
+              <Dropdown.Toggle>
+                <MdOutlineSettings className="icons-size"></MdOutlineSettings>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="1" href="/profile">
+                  Profile
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="2" href="/settings">
+                  Settings
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item eventKey="3" href="/">
+                  Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Col>
+          <Col xs="2" sm="1" md="1">
+            <Dropdown align={{ xl: "start" }}>
+              <Dropdown.Toggle>
+                <div className="d-flex align-items-center">
+                  <MdOutlineShoppingCart className="icons-size"></MdOutlineShoppingCart>
+                </div>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item eventKey="1" href="/profile">
+                  Profile
+                </Dropdown.Item>
+                <Dropdown.Item eventKey="2" href="/settings">
+                  Settings
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item eventKey="3" href="/">
+                  Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Col>
+        </Container>
+      </Navbar>
+    </>
   );
 };
 

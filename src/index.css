@@ -5,3 +5,32 @@ body {
 .dropdown-toggle::after {
   content: none !important;
 }
+
+.card-img,
+.card-img-top {
+  object-fit: contain;
+}
+
+.btn-primary {
+  background-color: transparent;
+  border: transparent;
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  border: transparent;
+}
+
+.btn:first-child:active {
+  background-color: transparent;
+  border: transparent;
+}
+
+.btn.show {
+  background-color: transparent;
+  border: transparent;
+}
+
+.icons-size {
+  font-size: 25px;
+}
