@@ -1,20 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-
-interface Product {
-  category: string;
-  description: string;
-  id: number;
-  price: number;
-  rating: { count: number; rate: number };
-  image: string;
-  title: string;
-}
-
-interface ProductsState {
-  data: Product[];
-  loading: boolean;
-  error: string;
-}
+import { Product, ProductsState } from "../../interfaces/product.interfaces";
 
 const initialState: ProductsState = {
   data: [],
