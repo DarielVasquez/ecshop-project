@@ -9,6 +9,7 @@ import {
   Row,
   Button,
   Badge,
+  CloseButton,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import {
@@ -20,7 +21,11 @@ import {
   MdRemove,
 } from "react-icons/md";
 import { useAppSelector, useAppDispatch } from "../app/hook";
-import { addToCart } from "../features/cart/cartSlice";
+import {
+  addToCart,
+  removeOneFromCart,
+  removeItemFromCart,
+} from "../features/cart/cartSlice";
 
 const NavigationBar = () => {
   const dispatch = useAppDispatch();
@@ -129,7 +134,14 @@ const NavigationBar = () => {
                         <Link to={"/"} className="dropdown-item">
                           <Row>
                             <Col
-                              xs="2"
+                              xs="1"
+                              className="d-flex align-items-center justify-content-center"
+                              onClick={() => dispatch(removeItemFromCart(item))}
+                            >
+                              <CloseButton></CloseButton>
+                            </Col>
+                            <Col
+                              xs="3"
                               sm="2"
                               className="d-flex align-items-center justify-content-center"
                             >
@@ -140,20 +152,18 @@ const NavigationBar = () => {
                               />
                             </Col>
                             <Col
-                              xs="3"
-                              sm="5"
-                              className="d-flex align-items-center justify-content-center"
+                              sm="4"
+                              className="d-sm-flex d-none align-items-center justify-content-center"
                               style={{ whiteSpace: "normal" }}
                             >
                               <span style={{ padding: "5px" }}>
-                                {title.length > 25
-                                  ? `${title.slice(0, 25)}...`
+                                {title.length > 30
+                                  ? `${title.slice(0, 30)}...`
                                   : title}
                               </span>
                             </Col>
-
                             <Col
-                              xs="5"
+                              xs="6"
                               sm="3"
                               className="d-flex align-items-center justify-content-center"
                             >
@@ -172,12 +182,15 @@ const NavigationBar = () => {
                                 style={{
                                   fontSize: "clamp(6px, 10px, 12px)",
                                 }}
+                                onClick={() =>
+                                  dispatch(removeOneFromCart(item))
+                                }
                               >
                                 <MdRemove></MdRemove>
                               </Button>
                             </Col>
                             <Col
-                              xs="2"
+                              xs="1"
                               sm="2"
                               className="d-flex align-items-center justify-content-center"
                             >

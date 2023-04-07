@@ -1,3 +1,5 @@
+//product interfaces
+
 export interface Product {
   category: string;
   description: string;
@@ -8,15 +10,18 @@ export interface Product {
   title: string;
 }
 
-export interface CartProduct extends Product {
-  amount: number;
-  total: number;
-}
-
 export interface ProductsState {
   data: Product[];
   loading: boolean;
   error: string;
+}
+
+//cart interfaces
+
+export interface CartProduct extends Product {
+  amount: number;
+  total: number;
+  removeItemFromCart?: boolean;
 }
 
 export interface CartState {

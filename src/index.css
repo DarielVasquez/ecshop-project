@@ -34,3 +34,10 @@ body {
 .icons-size {
   font-size: 25px;
 }
+
+.cart-img {
+  height: clamp(8vh, 7vh, 5vh);
+  width: clamp(8vh, 7vh, 5vh);
+  object-fit: contain;
+  padding: 5px;
+}
