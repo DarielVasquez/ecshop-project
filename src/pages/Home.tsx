@@ -1,27 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-
-interface Product {
-  category: string;
-  description: string;
-  id: number;
-  price: number;
-  rating: { count: number; rate: number };
-  image: string;
-  title: string;
-}
+import { useAppSelector, useAppDispatch } from "../app/hook";
+import { fetchProducts } from "../features/products/productsSlice";
+import { addToCart } from "../features/cart/cartSlice";
 
 const Home = () => {
-  const [data, setData] = useState<Product[]>([]);
-  const fetchData = async () => {
-    const res = await fetch(
-      "https://fakestoreapi.com/products/category/electronics?limit=4"
-    );
-    const data = await res.json();
-    setData(data);
-  };
+  const dispatch = useAppDispatch();
+  const data = useAppSelector((state) => state.products.data);
+
   useEffect(() => {
-    fetchData();
+    dispatch(fetchProducts());
   }, []);
 
   return (
@@ -40,7 +28,16 @@ const Home = () => {
                 <Card.Text>{data[0]?.category}</Card.Text>
                 <Card.Text>{data[0]?.description}</Card.Text>
                 <Card.Subtitle>${data[0]?.price}</Card.Subtitle>
-                <Button variant="primary">Add to Cart</Button>
+                <Button
+                  variant="secondary"
+                  onClick={() =>
+                    dispatch(
+                      addToCart({ ...data[0], amount: 1, total: data[0].price })
+                    )
+                  }
+                >
+                  Add to Cart
+                </Button>
               </Card.Body>
               <Card.Footer>
                 Rating: {data[0]?.rating.rate} ({data[0]?.rating.count})
@@ -59,7 +56,7 @@ const Home = () => {
                     rating,
                     image,
                     title,
-                  }: Product = product;
+                  } = product;
                   return (
                     <Col xs="12" sm="6" md="4" xl="3" className="p-1" key={id}>
                       <Card className="h-100">
@@ -85,7 +82,20 @@ const Home = () => {
                               : description}
                           </Card.Text>
                           <Card.Subtitle>${price}</Card.Subtitle>
-                          <Button variant="primary">Add to Cart</Button>
+                          <Button
+                            variant="secondary"
+                            onClick={() =>
+                              dispatch(
+                                addToCart({
+                                  ...product,
+                                  amount: 1,
+                                  total: data[i].price,
+                                })
+                              )
+                            }
+                          >
+                            Add to Cart
+                          </Button>
                         </Card.Body>
                         <Card.Footer>
                           Rating: {rating.rate} ({rating.count})
