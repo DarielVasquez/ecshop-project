@@ -6,16 +6,27 @@ import {
   Form,
   FormControl,
   Col,
+  Row,
+  Button,
+  Badge,
 } from "react-bootstrap";
-import { BsPrefixComponent } from "react-bootstrap/esm/helpers";
+import { Link } from "react-router-dom";
 import {
   MdMenu,
   MdOutlineShoppingCart,
   MdOutlineSettings,
   MdShoppingBasket,
+  MdAdd,
+  MdRemove,
 } from "react-icons/md";
+import { useAppSelector, useAppDispatch } from "../app/hook";
+import { addToCart } from "../features/cart/cartSlice";
 
 const NavigationBar = () => {
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.cartItems);
+  const totalAmount = useAppSelector((state) => state.cart.totalAmount);
+  const totalCost = useAppSelector((state) => state.cart.totalCost);
   return (
     <>
       <Navbar
@@ -38,9 +49,9 @@ const NavigationBar = () => {
             lg="1"
             className="d-flex justify-content-center"
           >
-            <Navbar.Brand href="/" className="d-flex">
+            <Link to={"/"} className="d-flex">
               <MdShoppingBasket className="icons-size"></MdShoppingBasket>
-            </Navbar.Brand>
+            </Link>
           </Col>
           <Col xs="2" sm="2" md="2" lg="2">
             <Dropdown>
@@ -51,12 +62,12 @@ const NavigationBar = () => {
                 </div>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item eventKey="1" href="/">
+                <Link to="/" className="dropdown-item">
                   Home
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="2" href="/about">
+                </Link>
+                <Link to="/about" className="dropdown-item">
                   About
-                </Dropdown.Item>
+                </Link>
               </Dropdown.Menu>
             </Dropdown>
           </Col>
@@ -75,37 +86,115 @@ const NavigationBar = () => {
                 <MdOutlineSettings className="icons-size"></MdOutlineSettings>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item eventKey="1" href="/profile">
+                <Link to="/profile" className="dropdown-item">
                   Profile
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="2" href="/settings">
+                </Link>
+                <Link to="/settings" className="dropdown-item">
                   Settings
-                </Dropdown.Item>
+                </Link>
                 <Dropdown.Divider />
-                <Dropdown.Item eventKey="3" href="/">
+                <Link to="/" className="dropdown-item">
                   Logout
-                </Dropdown.Item>
+                </Link>
               </Dropdown.Menu>
             </Dropdown>
           </Col>
           <Col xs="2" sm="1" md="1">
-            <Dropdown align={{ xl: "start" }}>
+            <Dropdown align={{ xs: "start" }}>
               <Dropdown.Toggle>
                 <div className="d-flex align-items-center">
                   <MdOutlineShoppingCart className="icons-size"></MdOutlineShoppingCart>
+                  {totalAmount !== 0 && (
+                    <Badge
+                      bg="secondary"
+                      style={{
+                        position: "absolute",
+                        top: "-5px",
+                        left: "25px",
+                      }}
+                    >
+                      {totalAmount}
+                    </Badge>
+                  )}
                 </div>
               </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item eventKey="1" href="/profile">
-                  Profile
-                </Dropdown.Item>
-                <Dropdown.Item eventKey="2" href="/settings">
-                  Settings
-                </Dropdown.Item>
+              <Dropdown.Menu style={{ width: "clamp(25vw, 500px, 95vw)" }}>
+                {cartItems?.length === 0 ? (
+                  <Dropdown.Item>No items added...</Dropdown.Item>
+                ) : (
+                  cartItems?.map((item, i) => {
+                    const { id, title, amount, total, image } = item;
+                    return (
+                      <Container key={id}>
+                        <Link to={"/"} className="dropdown-item">
+                          <Row>
+                            <Col
+                              xs="2"
+                              sm="2"
+                              className="d-flex align-items-center justify-content-center"
+                            >
+                              <img
+                                src={image}
+                                alt={title}
+                                className="cart-img"
+                              />
+                            </Col>
+                            <Col
+                              xs="3"
+                              sm="5"
+                              className="d-flex align-items-center justify-content-center"
+                              style={{ whiteSpace: "normal" }}
+                            >
+                              <span style={{ padding: "5px" }}>
+                                {title.length > 25
+                                  ? `${title.slice(0, 25)}...`
+                                  : title}
+                              </span>
+                            </Col>
+
+                            <Col
+                              xs="5"
+                              sm="3"
+                              className="d-flex align-items-center justify-content-center"
+                            >
+                              <Button
+                                variant="success"
+                                style={{
+                                  fontSize: "clamp(6px, 10px, 12px)",
+                                }}
+                                onClick={() => dispatch(addToCart(item))}
+                              >
+                                <MdAdd></MdAdd>
+                              </Button>
+                              <span className="p-2">{amount}</span>
+                              <Button
+                                variant="danger"
+                                style={{
+                                  fontSize: "clamp(6px, 10px, 12px)",
+                                }}
+                              >
+                                <MdRemove></MdRemove>
+                              </Button>
+                            </Col>
+                            <Col
+                              xs="2"
+                              sm="2"
+                              className="d-flex align-items-center justify-content-center"
+                            >
+                              <Row>
+                                <span>${total}</span>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </Link>
+                      </Container>
+                    );
+                  })
+                )}
                 <Dropdown.Divider />
-                <Dropdown.Item eventKey="3" href="/">
-                  Logout
-                </Dropdown.Item>
+                <Link to={"/cart"} className="dropdown-item text-center">
+                  View Cart
+                </Link>
               </Dropdown.Menu>
             </Dropdown>
           </Col>
