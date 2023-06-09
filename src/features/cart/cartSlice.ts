@@ -4,7 +4,16 @@ import { CartProduct, CartState } from "../../interfaces/product.interfaces";
 const initialState: CartState = {
   cartItems: [],
   totalAmount: 0,
+  subtotalCost: 0,
+  taxes: 0,
   totalCost: 0,
+};
+
+const calculateTotals = (subtotal: number) => {
+  const taxRate = 0.1;
+  const taxes = subtotal * taxRate;
+  const totalCost = subtotal + taxes;
+  return { taxes, totalCost };
 };
 
 const cartSlice = createSlice({
@@ -27,7 +36,10 @@ const cartSlice = createSlice({
       state.cartItems = isRepeated
         ? [...cart]
         : [...state.cartItems, action.payload];
-      state.totalCost = state.totalCost + action.payload.price;
+      state.subtotalCost = state.subtotalCost + action.payload.price;
+      const { taxes, totalCost } = calculateTotals(state.subtotalCost);
+      state.taxes = taxes;
+      state.totalCost = totalCost;
       state.totalAmount = state.totalAmount + 1;
     },
     removeOneFromCart(state, action: PayloadAction<CartProduct>) {
@@ -44,7 +56,10 @@ const cartSlice = createSlice({
         return item.amount !== 0;
       });
       state.cartItems = [...cartFilter];
-      state.totalCost = state.totalCost - action.payload.price;
+      state.subtotalCost = state.subtotalCost - action.payload.price;
+      const { taxes, totalCost } = calculateTotals(state.subtotalCost);
+      state.taxes = taxes;
+      state.totalCost = totalCost;
       state.totalAmount = state.totalAmount - 1;
     },
     removeItemFromCart(state, action: PayloadAction<CartProduct>) {
@@ -52,7 +67,10 @@ const cartSlice = createSlice({
         return item.id !== action.payload.id;
       });
       state.cartItems = [...cartFilter];
-      state.totalCost = state.totalCost - action.payload.total;
+      state.subtotalCost = state.subtotalCost - action.payload.total;
+      const { taxes, totalCost } = calculateTotals(state.subtotalCost);
+      state.taxes = taxes;
+      state.totalCost = totalCost;
       state.totalAmount = state.totalAmount - action.payload.amount;
     },
   },

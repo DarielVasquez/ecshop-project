@@ -21,11 +21,12 @@ export interface ProductsState {
 export interface CartProduct extends Product {
   amount: number;
   total: number;
-  removeItemFromCart?: boolean;
 }
 
 export interface CartState {
   cartItems: CartProduct[];
   totalAmount: number;
+  subtotalCost: number;
+  taxes: number;
   totalCost: number;
 }
