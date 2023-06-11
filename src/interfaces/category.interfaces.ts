@@ -1,11 +1,7 @@
 //category interfaces
 
-export interface Category {
-  category: string;
-}
-
 export interface CategoriesState {
-  data: Category[];
+  data: string[];
   loading: boolean;
   error: string;
 }

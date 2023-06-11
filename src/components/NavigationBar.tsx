@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Navbar,
+  Nav,
   Container,
   Dropdown,
   Form,
@@ -26,12 +27,19 @@ import {
   removeOneFromCart,
   removeItemFromCart,
 } from "../features/cart/cartSlice";
+import { fetchCategories } from "../features/categories/categoriesSlice";
 
 const NavigationBar = () => {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.cartItems);
   const totalAmount = useAppSelector((state) => state.cart.totalAmount);
   const totalCost = useAppSelector((state) => state.cart.totalCost);
+  const categories = useAppSelector((state) => state.categories.data);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
+
   return (
     <>
       <Navbar
@@ -125,7 +133,9 @@ const NavigationBar = () => {
               </Dropdown.Toggle>
               <Dropdown.Menu style={{ width: "clamp(25vw, 500px, 95vw)" }}>
                 {cartItems?.length === 0 ? (
-                  <Dropdown.Item>No items added...</Dropdown.Item>
+                  <Container className="d-flex align-items-center justify-content-center p-2">
+                    No items added...
+                  </Container>
                 ) : (
                   cartItems?.map((item, i) => {
                     const { id, title, amount, total, image } = item;
@@ -211,6 +221,26 @@ const NavigationBar = () => {
               </Dropdown.Menu>
             </Dropdown>
           </Col>
+        </Container>
+      </Navbar>
+      <Navbar
+        bg="secondary"
+        variant="dark"
+        expand="md"
+        fixed="top"
+        className="p-1"
+        style={{ marginTop: "95px", zIndex: "1" }}
+      >
+        <Container>
+          <Nav className="me-auto">
+            {categories?.map((cat, i) => {
+              return (
+                <Nav.Link key={i} href={cat} className="text-capitalize">
+                  {cat}
+                </Nav.Link>
+              );
+            })}
+          </Nav>
         </Container>
       </Navbar>
     </>

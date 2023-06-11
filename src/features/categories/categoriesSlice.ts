@@ -1,8 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import {
-  Category,
-  CategoriesState,
-} from "../../interfaces/category.interfaces";
+import { CategoriesState } from "../../interfaces/category.interfaces";
 
 const initialState: CategoriesState = {
   data: [],
@@ -31,7 +28,7 @@ const categoriesSlice = createSlice({
     });
     builder.addCase(
       fetchCategories.fulfilled,
-      (state, action: PayloadAction<Category[]>) => {
+      (state, action: PayloadAction<string[]>) => {
         state.loading = false;
         state.data = action.payload;
       }
