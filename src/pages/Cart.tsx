@@ -38,85 +38,106 @@ const Cart = () => {
     <main>
       <Container>
         <Row>
-          <Col xs="8">
+          <Col xs="12" md="8">
             {cartItems?.map((item, i) => {
-              const { id, title, amount, total, image } = item;
+              const { id, title, amount, total, image, price, category } = item;
               return (
                 <Container key={id}>
                   <Row>
                     <Col
-                      xs="1"
-                      className="d-flex align-items-center justify-content-center"
-                      onClick={() => dispatch(removeItemFromCart(item))}
-                    >
-                      <CloseButton></CloseButton>
-                    </Col>
-                    <Col
-                      xs="3"
-                      sm="2"
-                      className="d-flex align-items-center justify-content-center"
-                    >
-                      <img src={image} alt={title} className="cart-img" />
-                    </Col>
-                    <Col
+                      xs="12"
                       sm="4"
-                      className="d-sm-flex d-none align-items-center justify-content-center"
-                      style={{ whiteSpace: "normal" }}
+                      className="d-flex align-items-center justify-content-center p-2"
                     >
-                      <span style={{ padding: "5px" }}>
-                        {title.length > 60 ? `${title.slice(0, 60)}...` : title}
-                      </span>
+                      <img
+                        src={image}
+                        alt={title}
+                        className="cart-img"
+                        style={{
+                          height: "clamp(16vh, 14vh, 12vh)",
+                          width: "clamp(16vh, 14vh, 12vh)",
+                        }}
+                      />
                     </Col>
                     <Col
                       xs="6"
-                      sm="3"
-                      className="d-flex align-items-center justify-content-center"
-                    >
-                      <Button
-                        variant="success"
-                        style={{
-                          fontSize: "clamp(6px, 10px, 12px)",
-                        }}
-                        onClick={() => dispatch(addToCart(item))}
-                      >
-                        <MdAdd></MdAdd>
-                      </Button>
-                      <span className="p-2">{amount}</span>
-                      <Button
-                        variant="danger"
-                        style={{
-                          fontSize: "clamp(6px, 10px, 12px)",
-                        }}
-                        onClick={() => dispatch(removeOneFromCart(item))}
-                      >
-                        <MdRemove></MdRemove>
-                      </Button>
-                    </Col>
-                    <Col
-                      xs="1"
-                      sm="2"
-                      className="d-flex align-items-center justify-content-center"
+                      sm="4"
+                      className="d-flex align-items-center p-2"
+                      style={{ whiteSpace: "normal" }}
                     >
                       <Row>
-                        <span>${total}</span>
+                        <span style={{ padding: "5px", fontWeight: "500" }}>
+                          {title}
+                        </span>
+                        <span
+                          style={{ padding: "5px" }}
+                          className="text-capitalize"
+                        >
+                          {category}
+                        </span>
+                        <span style={{ padding: "5px", fontWeight: "100" }}>
+                          Each: ${price}
+                        </span>
+                        <span
+                          style={{
+                            padding: "5px",
+                            cursor: "pointer",
+                            color: "red",
+                          }}
+                          onClick={() => dispatch(removeItemFromCart(item))}
+                        >
+                          Remove
+                        </span>
                       </Row>
                     </Col>
+                    <Col xs="6" sm="4" className="d-flex justify-content-end">
+                      <Row>
+                        <span
+                          style={{ fontWeight: "600" }}
+                          className="fs-5 d-flex justify-content-end pt-4"
+                        >
+                          ${total !== price && amount === 1 ? price : total}
+                        </span>
+                        <Col className="d-flex align-items-center justify-content-end pt-3 pb-3">
+                          <Button
+                            variant="success"
+                            style={{
+                              fontSize: "clamp(6px, 10px, 12px)",
+                            }}
+                            onClick={() => dispatch(addToCart(item))}
+                          >
+                            <MdAdd></MdAdd>
+                          </Button>
+                          <span className="p-2">{amount}</span>
+                          <Button
+                            variant="danger"
+                            style={{
+                              fontSize: "clamp(6px, 10px, 12px)",
+                            }}
+                            onClick={() => dispatch(removeOneFromCart(item))}
+                          >
+                            <MdRemove></MdRemove>
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <hr />
                   </Row>
                 </Container>
               );
             })}
           </Col>
-          <Col xs="4">
+          <Col xs="12" md="4">
             <Card>
               <Card.Body>
                 <Card.Title>Order Summary</Card.Title>
                 <hr />
                 <Card.Text>
                   Subtotal ({totalAmount} {totalAmount > 1 ? "items" : "item"}):
-                  ${subtotalCost}
+                  ${subtotalCost.toFixed(2)}
                 </Card.Text>
-                <Card.Text>Taxes: {taxes.toFixed(2)}</Card.Text>
-                <Card.Text>Total: {totalCost.toFixed(2)}</Card.Text>
+                <Card.Text>Taxes: ${taxes.toFixed(2)}</Card.Text>
+                <Card.Text>Total: ${totalCost.toFixed(2)}</Card.Text>
                 <div className="d-flex justify-content-center">
                   <Button variant="secondary" className="w-100">
                     Proceed to Checkout
