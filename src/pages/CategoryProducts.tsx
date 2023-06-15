@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  Spinner,
+  Accordion,
+} from "react-bootstrap";
 import { useAppSelector, useAppDispatch } from "../app/hook";
 import { fetchCategoryProducts } from "../features/categoryProducts/categoryProductsSlice";
 import { Link, useParams, useNavigate } from "react-router-dom";
@@ -13,6 +21,7 @@ const CategoryProducts = () => {
   const products = useAppSelector((state) => state.categoryProducts.data);
   const loading = useAppSelector((state) => state.categoryProducts.loading);
   const error = useAppSelector((state) => state.categoryProducts.error);
+  const categories = useAppSelector((state) => state.categories.data);
 
   useEffect(() => {
     if (category) {
@@ -25,10 +34,27 @@ const CategoryProducts = () => {
       <Container>
         <Card className="p-5">
           <Row>
-            <Col xs="12" sm="3">
-              Filters
+            <Col xs="12" md="3">
+              <Accordion defaultActiveKey="0">
+                <Accordion.Item eventKey="0">
+                  <Accordion.Header>Categories</Accordion.Header>
+                  <Accordion.Body>
+                    {categories?.map((cat, i) => {
+                      return (
+                        <Link
+                          className="text-capitalize link-underline"
+                          to={`/category/${cat}`}
+                        >
+                          {cat}
+                          <br />
+                        </Link>
+                      );
+                    })}
+                  </Accordion.Body>
+                </Accordion.Item>
+              </Accordion>
             </Col>
-            <Col xs="12" sm="9">
+            <Col xs="12" md="9">
               <Row>
                 {loading ? (
                   <div className="d-flex justify-content-center">
@@ -40,7 +66,7 @@ const CategoryProducts = () => {
                       <span className="visually-hidden">Loading...</span>
                     </Spinner>
                   </div>
-                ) : error ? (
+                ) : error || products.length === 0 ? (
                   <div
                     className="d-flex justify-content-center align-items-center"
                     style={{ gap: "5px" }}

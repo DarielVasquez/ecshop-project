@@ -11,6 +11,7 @@ import {
   Button,
   Badge,
   CloseButton,
+  Card,
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -28,6 +29,7 @@ import {
   removeItemFromCart,
 } from "../features/cart/cartSlice";
 import { fetchCategories } from "../features/categories/categoriesSlice";
+import { fetchProducts } from "../features/products/productsSlice";
 import ShopIcon from "../../public/shop.png";
 
 const NavigationBar = () => {
@@ -38,10 +40,47 @@ const NavigationBar = () => {
   const categories = useAppSelector((state) => state.categories.data);
   const loading = useAppSelector((state) => state.categories.loading);
   const error = useAppSelector((state) => state.categories.error);
+  const products = useAppSelector((state) => state.products.data);
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCategories());
+    if (!products) {
+      dispatch(fetchProducts());
+    }
   }, []);
+
+  const searchProducts = (query: string) => {
+    if (!query) {
+      setShowResults(false);
+      return [];
+    }
+
+    const searchQuery = query.toLowerCase();
+
+    // Filter the products array based on the search query
+    const searchResults = products?.filter((product) => {
+      const { title, description, category } = product;
+
+      // Check if any of the product properties match the search query
+      return (
+        title.toLowerCase().includes(searchQuery) ||
+        description.toLowerCase().includes(searchQuery) ||
+        category.toLowerCase().includes(searchQuery)
+      );
+    });
+
+    setShowResults(true);
+    return searchResults;
+  };
+
+  const handleSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const data = searchProducts(query);
+    setResults(data);
+  };
 
   return (
     <>
@@ -95,14 +134,51 @@ const NavigationBar = () => {
                   </Dropdown.Menu>
                 </Dropdown>
               </Col>
-              <Col xs="4" sm="7" md="7" lg="7">
+              <Col xs="4" sm="7" md="7" lg="7" className="position-relative">
                 <Form className="d-flex justify-content-center">
                   <FormControl
-                    type="text"
+                    type="search"
                     placeholder="Search"
                     className="mr-sm-2"
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                      setResults([]);
+                    }}
+                    onKeyDown={(
+                      event: React.KeyboardEvent<HTMLInputElement>
+                    ) => {
+                      if (event.key === "Enter") {
+                        handleSubmit(event);
+                      }
+                    }}
+                    onMouseEnter={() => setShowResults(true)}
                   />
                 </Form>
+                {results.length > 0 && showResults && (
+                  <Card
+                    className="position-absolute p-2 d-flex results-card"
+                    style={{
+                      left: "0",
+                      right: "0",
+                      maxHeight: "50vh",
+                      overflow: "auto",
+                    }}
+                    onMouseLeave={() => setShowResults(false)}
+                  >
+                    {results.map((product) => {
+                      const { title, id } = product;
+                      return (
+                        <Link
+                          className="py-2 px-1 link-underline"
+                          key={id}
+                          to={`/product/${id - 1}`}
+                        >
+                          {title}
+                        </Link>
+                      );
+                    })}
+                  </Card>
+                )}
               </Col>
               <Col
                 xs="2"

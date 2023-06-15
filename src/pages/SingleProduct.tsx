@@ -9,7 +9,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import { useAppSelector, useAppDispatch } from "../app/hook";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { fetchProducts } from "../features/products/productsSlice";
 import { addToCart } from "../features/cart/cartSlice";
 import { Rating } from "../components";
@@ -33,7 +33,9 @@ const SingleProduct = () => {
   const product = data[Number(id)];
 
   useEffect(() => {
-    dispatch(fetchProducts());
+    if (!data.length) {
+      dispatch(fetchProducts());
+    }
   }, []);
 
   useEffect(() => {
@@ -50,7 +52,12 @@ const SingleProduct = () => {
             <Col className="text-capitalize">
               <p className="ps-3 pt-3">
                 Category:
-                <span className="ps-2">{product?.category}</span>
+                <Link
+                  className="ps-2 link-underline"
+                  to={`/category/${product?.category}`}
+                >
+                  {product?.category}
+                </Link>
               </p>
             </Col>
           </Row>
@@ -58,68 +65,90 @@ const SingleProduct = () => {
             <Col
               xs="12"
               xl="1"
-              className="d-flex flex-row flex-xl-column order-xl-first"
+              className="d-flex flex-row flex-xl-column justify-content-center order-xl-first"
               style={{ rowGap: "10px", columnGap: "10px" }}
             >
-              <Image
-                src={product?.image}
-                rounded
-                className="border"
-                style={{
-                  height: "clamp(5vh, 5em, 15vh)",
-                  width: "clamp(5vw, 5em, 15vw)",
-                  objectFit: "contain",
-                  padding: "5px",
-                }}
-              ></Image>
-              <Image
-                src={product?.image}
-                rounded
-                className="border"
-                style={{
-                  height: "clamp(5vh, 5em, 15vh)",
-                  width: "clamp(5vw, 5em, 15vw)",
-                  objectFit: "contain",
-                  padding: "5px",
-                }}
-              ></Image>
+              {product &&
+                Array.from(
+                  {
+                    length: 3,
+                  },
+                  (_, i) => (
+                    <Image
+                      src={product?.image}
+                      rounded
+                      className="border"
+                      style={{
+                        height: "clamp(5vh, 5em, 15vh)",
+                        width: "clamp(5vw, 5em, 15vw)",
+                        objectFit: "contain",
+                        padding: "5px",
+                        cursor: "pointer",
+                      }}
+                      key={i}
+                    ></Image>
+                  )
+                )}
             </Col>
             <Col xs="12" lg="8" xl="7" className="order-first">
               <div className="d-flex justify-content-center pt-5 pb-5 product-img-container">
-                <img
-                  src={product?.image}
-                  alt={product?.title}
-                  className="single-product-img"
-                />
+                {!product && !loading ? (
+                  <div
+                    className="d-flex justify-content-center align-items-center py-5 my-5"
+                    style={{ gap: "5px" }}
+                  >
+                    <MdErrorOutline></MdErrorOutline>
+                    Product not found
+                  </div>
+                ) : (
+                  <img
+                    src={product?.image}
+                    alt={product?.title}
+                    className="single-product-img"
+                  />
+                )}
               </div>
             </Col>
             <Col xs="12" lg="4" className="order-last order-lg-first pt-3">
               <Card className="p-3">
-                <p className="fs-5" style={{ fontWeight: "600" }}>
-                  {product?.title}
-                </p>
-                <Col className="d-flex flex-row pb-4">
-                  <Rating rating={product?.rating.rate}></Rating>
-                  <span className="rating-num">
-                    ({product?.rating.rate}) {product?.rating.count} reviews
-                  </span>
-                </Col>
-                <p className="fs-5">${product?.price}</p>
-                <p>{product?.description}</p>
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    dispatch(
-                      addToCart({
-                        ...product,
-                        amount: 1,
-                        total: product?.price,
-                      })
-                    )
-                  }
-                >
-                  Add to cart
-                </Button>
+                {!product && !loading ? (
+                  <div
+                    className="d-flex justify-content-center align-items-center py-5 my-5"
+                    style={{ gap: "5px" }}
+                  >
+                    <MdErrorOutline></MdErrorOutline>
+                    Product not found
+                  </div>
+                ) : (
+                  <div>
+                    <p className="fs-5" style={{ fontWeight: "600" }}>
+                      {product?.title}
+                    </p>
+                    <Col className="d-flex flex-row pb-4">
+                      <Rating rating={product?.rating.rate}></Rating>
+                      <span className="rating-num">
+                        ({product?.rating.rate}) {product?.rating.count} reviews
+                      </span>
+                    </Col>
+                    <p className="fs-5">${product?.price}</p>
+                    <p>{product?.description}</p>
+                    <Button
+                      variant="secondary"
+                      style={{ width: "100%" }}
+                      onClick={() =>
+                        dispatch(
+                          addToCart({
+                            ...product,
+                            amount: 1,
+                            total: product?.price,
+                          })
+                        )
+                      }
+                    >
+                      Add to cart
+                    </Button>
+                  </div>
+                )}
               </Card>
             </Col>
           </Row>
@@ -132,7 +161,7 @@ const SingleProduct = () => {
                     <span className="visually-hidden">Loading...</span>
                   </Spinner>
                 </div>
-              ) : categoryError ? (
+              ) : categoryError || !product ? (
                 <div
                   className="d-flex justify-content-center align-items-center p-5 m-5"
                   style={{ gap: "5px" }}

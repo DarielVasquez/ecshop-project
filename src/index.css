@@ -95,6 +95,13 @@ main {
   padding-top: 4px;
 }
 
+@media only screen and (max-width: 575px) {
+  .results-card {
+    right: -25vw !important;
+    left: -25vw !important;
+  }
+}
+
 /* Track styles */
 ::-webkit-scrollbar {
   width: 8px;
@@ -118,7 +125,7 @@ nav {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  z-index: 100;
 }
 
 footer {
