@@ -45,16 +45,7 @@ const NavigationBar = () => {
 
   return (
     <>
-      <nav
-        style={{
-          backgroundColor: "gray",
-          position: "fixed",
-          top: "0",
-          left: "0",
-          right: "0",
-          zIndex: "1",
-        }}
-      >
+      <nav>
         <div style={{ backgroundColor: "#053C5E" }}>
           <Container className="p-1">
             <Row>
@@ -185,7 +176,7 @@ const NavigationBar = () => {
                                   <CloseButton></CloseButton>
                                 </Col>
                                 <Col
-                                  xs="3"
+                                  xs="2"
                                   sm="2"
                                   className="d-flex align-items-center justify-content-center"
                                 >
@@ -234,7 +225,7 @@ const NavigationBar = () => {
                                   </Button>
                                 </Col>
                                 <Col
-                                  xs="1"
+                                  xs="2"
                                   sm="2"
                                   className="d-flex align-items-center justify-content-center"
                                 >
@@ -243,7 +234,7 @@ const NavigationBar = () => {
                                       $
                                       {total !== price && amount === 1
                                         ? price
-                                        : total}
+                                        : total.toFixed(2)}
                                     </span>
                                   </Row>
                                 </Col>

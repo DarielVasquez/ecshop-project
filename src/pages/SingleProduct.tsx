@@ -54,25 +54,38 @@ const SingleProduct = () => {
               </p>
             </Col>
           </Row>
-          <Row className="p-5">
-            <Col xs="12" lg="1">
+          <Row className="p-3 p-md-5">
+            <Col
+              xs="12"
+              xl="1"
+              className="d-flex flex-row flex-xl-column order-xl-first"
+              style={{ rowGap: "10px", columnGap: "10px" }}
+            >
               <Image
                 src={product?.image}
                 rounded
                 className="border"
                 style={{
-                  height: "100px",
-                  width: "100px",
+                  height: "clamp(5vh, 5em, 15vh)",
+                  width: "clamp(5vw, 5em, 15vw)",
+                  objectFit: "contain",
+                  padding: "5px",
+                }}
+              ></Image>
+              <Image
+                src={product?.image}
+                rounded
+                className="border"
+                style={{
+                  height: "clamp(5vh, 5em, 15vh)",
+                  width: "clamp(5vw, 5em, 15vw)",
                   objectFit: "contain",
                   padding: "5px",
                 }}
               ></Image>
             </Col>
-            <Col xs="12" lg="7">
-              <div
-                style={{}}
-                className="d-flex justify-content-center pt-5 pb-5"
-              >
+            <Col xs="12" lg="8" xl="7" className="order-first">
+              <div className="d-flex justify-content-center pt-5 pb-5 product-img-container">
                 <img
                   src={product?.image}
                   alt={product?.title}
@@ -80,7 +93,7 @@ const SingleProduct = () => {
                 />
               </div>
             </Col>
-            <Col xs="12" lg="4">
+            <Col xs="12" lg="4" className="order-last order-lg-first pt-3">
               <Card className="p-3">
                 <p className="fs-5" style={{ fontWeight: "600" }}>
                   {product?.title}

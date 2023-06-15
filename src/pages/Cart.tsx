@@ -95,6 +95,7 @@ const Cart = () => {
                               padding: "5px",
                               cursor: "pointer",
                               color: "red",
+                              width: "auto",
                             }}
                             onClick={() => dispatch(removeItemFromCart(item))}
                           >
