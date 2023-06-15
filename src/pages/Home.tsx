@@ -9,6 +9,7 @@ import Deal from "../assets/deal.png";
 import ElectronicDeal from "../assets/electronic.png";
 import JewelryDeal from "../assets/jewelry.png";
 import ClothingDeal from "../assets/clothing.png";
+import { Rating } from "../components";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -51,7 +52,10 @@ const Home = () => {
               </div>
             ) : (
               <Card className="h-100">
-                <Link to={`/product/${data[0]?.id}`} className="link-underline">
+                <Link
+                  to={`/product/${data[0]?.id - 1}`}
+                  className="link-underline"
+                >
                   <Card.Img
                     variant="top"
                     src={data[0]?.image}
@@ -129,7 +133,7 @@ const Home = () => {
                       <Col xs="12" sm="6" md="4" className="p-1" key={id}>
                         <Card className="h-100">
                           <Link
-                            to={`/product/${id}`}
+                            to={`/product/${id - 1}`}
                             className="link-underline"
                           >
                             <Card.Img
@@ -218,8 +222,70 @@ const Home = () => {
           </Col>
         </Row>
         <Row>
-          <Col lg="12" className="border mt-2 mb-2">
-            <div style={{ height: "1000px" }}>6</div>
+          <Col lg="12" className=" mt-2 mb-2">
+            <Card>
+              {loading ? (
+                <div className="d-flex justify-content-center p-5 m-5">
+                  <Spinner animation="border" role="status" variant="secondary">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </div>
+              ) : error ? (
+                <div
+                  className="d-flex justify-content-center align-items-center p-5 m-5"
+                  style={{ gap: "5px" }}
+                >
+                  <MdErrorOutline></MdErrorOutline>
+                  Error loading content
+                </div>
+              ) : (
+                <div
+                  className="d-flex flex-row pb-3 m-5 mb-3 mt-3"
+                  style={{ overflowX: "auto", gap: "10px" }}
+                >
+                  {data
+                    ?.map((value) => ({ value, sort: Math.random() })) // Randomizes array
+                    .sort((a, b) => a.sort - b.sort)
+                    .map(({ value }) => value)
+                    .slice(0, 8)
+                    .map((product) => {
+                      const {
+                        category,
+                        description,
+                        id,
+                        price,
+                        rating,
+                        image,
+                        title,
+                      } = product;
+                      return (
+                        <Col xs="12" sm="6" md="4" lg="2" key={id}>
+                          <Row>
+                            <div className="d-flex justify-content-center pt-3 pb-3">
+                              <img
+                                src={image}
+                                alt={title}
+                                className="category-product-img"
+                                onClick={() => navigate(`/product/${id - 1}`)}
+                              />
+                            </div>
+                            <p style={{ fontWeight: "600", fontSize: "18px" }}>
+                              ${price}
+                            </p>
+                            <p>{title}</p>
+                            <Col className="d-flex flex-row">
+                              <Rating rating={rating.rate}></Rating>
+                              <span className="d-flex align-items-center rating-num">
+                                {rating.count}
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      );
+                    })}
+                </div>
+              )}
+            </Card>
           </Col>
         </Row>
       </Container>

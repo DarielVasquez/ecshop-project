@@ -37,8 +37,10 @@ const SingleProduct = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(fetchCategoryProducts(product?.category));
-  }, [product]);
+    if (data.length > 0) {
+      dispatch(fetchCategoryProducts(data[Number(id)]?.category));
+    }
+  }, [data, id]);
 
   return (
     <main>
@@ -127,7 +129,7 @@ const SingleProduct = () => {
                 </div>
               ) : (
                 <div
-                  className="d-flex flex-row ps-5 pb-3 m-5 mb-3 mt-3"
+                  className="d-flex flex-row pb-3 m-5 mb-3 mt-3"
                   style={{ overflowX: "auto", gap: "10px" }}
                 >
                   {categoryProducts
@@ -143,7 +145,7 @@ const SingleProduct = () => {
                         title,
                       } = product;
                       return (
-                        <Col xs="2" key={id}>
+                        <Col xs="12" sm="6" md="4" lg="2" key={id}>
                           <Row>
                             <div className="d-flex justify-content-center pt-3 pb-3">
                               <img
@@ -190,7 +192,7 @@ const SingleProduct = () => {
                 </div>
               ) : (
                 <div
-                  className="d-flex flex-row ps-5 pb-3 m-5 mb-3 mt-3"
+                  className="d-flex flex-row pb-3 m-5 mb-3 mt-3"
                   style={{ overflowX: "auto", gap: "10px" }}
                 >
                   {data
@@ -210,7 +212,7 @@ const SingleProduct = () => {
                         title,
                       } = product;
                       return (
-                        <Col xs="2" key={id}>
+                        <Col xs="12" sm="6" md="4" lg="2" key={id}>
                           <Row>
                             <div className="d-flex justify-content-center pt-3 pb-3">
                               <img

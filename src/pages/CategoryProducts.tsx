@@ -60,14 +60,14 @@ const CategoryProducts = () => {
                       title,
                     } = product;
                     return (
-                      <Col xs="6" md="4" lg="3" key={id}>
+                      <Col xs="12" sm="6" md="4" lg="3" key={id}>
                         <Row>
                           <div className="d-flex justify-content-center pt-3 pb-3">
                             <img
                               src={image}
                               alt={title}
                               className="category-product-img"
-                              onClick={() => navigate(`/product/${id}`)}
+                              onClick={() => navigate(`/product/${id - 1}`)}
                             />
                           </div>
                           <p style={{ fontWeight: "600", fontSize: "18px" }}>
@@ -76,14 +76,7 @@ const CategoryProducts = () => {
                           <p>{title}</p>
                           <Col className="d-flex flex-row">
                             <Rating rating={rating.rate}></Rating>
-                            <span
-                              style={{
-                                fontSize: "12px",
-                                paddingLeft: "4px",
-                                paddingTop: "4px",
-                              }}
-                              className="d-flex align-items-center"
-                            >
+                            <span className="d-flex align-items-center rating-num">
                               {rating.count}
                             </span>
                           </Col>
