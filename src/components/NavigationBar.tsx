@@ -230,7 +230,13 @@ const NavigationBar = () => {
                       )}
                     </div>
                   </Dropdown.Toggle>
-                  <Dropdown.Menu style={{ width: "clamp(25vw, 500px, 95vw)" }}>
+                  <Dropdown.Menu
+                    style={{
+                      width: "clamp(25vw, 500px, 95vw)",
+                      maxHeight: "60vh",
+                      overflow: "auto",
+                    }}
+                  >
                     {cartItems?.length === 0 ? (
                       <Container className="d-flex align-items-center justify-content-center p-2">
                         No items added...

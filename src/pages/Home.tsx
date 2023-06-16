@@ -37,19 +37,23 @@ const Home = () => {
           </Col>
           <Col md="12" lg="5" className="mt-2 mb-2">
             {loading ? (
-              <div className="d-flex justify-content-center">
-                <Spinner animation="border" role="status" variant="secondary">
-                  <span className="visually-hidden">Loading...</span>
-                </Spinner>
-              </div>
+              <Card>
+                <div className="d-flex justify-content-center py-5">
+                  <Spinner animation="border" role="status" variant="secondary">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </div>
+              </Card>
             ) : error ? (
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ gap: "5px" }}
-              >
-                <MdErrorOutline></MdErrorOutline>
-                Error loading content
-              </div>
+              <Card>
+                <div
+                  className="d-flex justify-content-center align-items-center"
+                  style={{ gap: "5px" }}
+                >
+                  <MdErrorOutline></MdErrorOutline>
+                  Error loading content
+                </div>
+              </Card>
             ) : (
               <Card className="h-100">
                 <Link
@@ -104,19 +108,27 @@ const Home = () => {
           <Col md="12" lg="7" className="mt-2 mb-2">
             <Col>
               {loading ? (
-                <div className="d-flex justify-content-center">
-                  <Spinner animation="border" role="status" variant="secondary">
-                    <span className="visually-hidden">Loading...</span>
-                  </Spinner>
-                </div>
+                <Card>
+                  <div className="d-flex justify-content-center py-5">
+                    <Spinner
+                      animation="border"
+                      role="status"
+                      variant="secondary"
+                    >
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                  </div>
+                </Card>
               ) : error ? (
-                <div
-                  className="d-flex justify-content-center align-items-center"
-                  style={{ gap: "5px" }}
-                >
-                  <MdErrorOutline></MdErrorOutline>
-                  Error loading content
-                </div>
+                <Card>
+                  <div
+                    className="d-flex justify-content-center align-items-center py-5"
+                    style={{ gap: "5px" }}
+                  >
+                    <MdErrorOutline></MdErrorOutline>
+                    Error loading content
+                  </div>
+                </Card>
               ) : (
                 <Row>
                   {data?.slice(1, 7).map((product, i) => {

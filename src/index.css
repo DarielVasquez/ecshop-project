@@ -106,7 +106,8 @@ main {
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
-  background-color: transparent;
+  background-color: white;
+  border-radius: 25px;
 }
 
 /* Handle styles */
