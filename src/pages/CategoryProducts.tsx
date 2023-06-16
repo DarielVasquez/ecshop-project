@@ -44,6 +44,7 @@ const CategoryProducts = () => {
                         <Link
                           className="text-capitalize link-underline"
                           to={`/category/${cat}`}
+                          key={i}
                         >
                           {cat}
                           <br />
