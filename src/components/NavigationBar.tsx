@@ -31,6 +31,7 @@ import {
 import { fetchCategories } from "../features/categories/categoriesSlice";
 import { fetchProducts } from "../features/products/productsSlice";
 import ShopIcon from "../../public/shop.png";
+import { Product } from "../interfaces/product.interfaces";
 
 const NavigationBar = () => {
   const dispatch = useAppDispatch();
@@ -42,7 +43,7 @@ const NavigationBar = () => {
   const error = useAppSelector((state) => state.categories.error);
   const products = useAppSelector((state) => state.products.data);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<Product[]>([]);
   const [showResults, setShowResults] = useState(false);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ const NavigationBar = () => {
     return searchResults;
   };
 
-  const handleSubmit = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = (event: React.KeyboardEvent<HTMLInputElement>) => {
     event.preventDefault();
     const data = searchProducts(query);
     setResults(data);
