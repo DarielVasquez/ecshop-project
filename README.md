@@ -2,7 +2,7 @@
 
 This is an e-commerce web app built with Vite that allows users to browse and shop for products. The app uses the FakeShopAPI to fetch product data and display it to the users.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Vite](https://vitejs.dev/).
 
 # Technologies Used
 
