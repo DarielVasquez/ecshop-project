@@ -105,8 +105,8 @@ const Home = () => {
               </Card>
             )}
           </Col>
-          <Col md="12" lg="7" className="mt-2 mb-2">
-            <Col>
+          <Col md="12" lg="7" className="mt-2">
+            <Col className="h-100">
               {loading ? (
                 <Card>
                   <div className="d-flex justify-content-center py-5">
@@ -130,7 +130,7 @@ const Home = () => {
                   </div>
                 </Card>
               ) : (
-                <Row>
+                <Row className="h-100">
                   {data?.slice(1, 7).map((product, i) => {
                     const {
                       category,
@@ -142,20 +142,26 @@ const Home = () => {
                       title,
                     } = product;
                     return (
-                      <Col xs="12" sm="6" md="4" className="p-1" key={id}>
+                      <Col
+                        xs="12"
+                        sm="6"
+                        md="4"
+                        className="p-1 px-3 px-sm-1"
+                        key={id}
+                      >
                         <Card className="h-100">
                           <Link
                             to={`/product/${id - 1}`}
-                            className="link-underline"
+                            style={{ maxWidth: "50%" }}
+                            className="link-underline mx-auto m-2"
                           >
                             <Card.Img
                               variant="top"
                               src={image}
-                              className="mt-1"
                               style={{ height: "clamp(20vh, 18vh, 15vh)" }}
                             />
                           </Link>
-                          <Card.Body>
+                          <Card.Body className="d-flex flex-column justify-content-around">
                             <Card.Title
                               style={{
                                 textOverflow: "ellipsis",
